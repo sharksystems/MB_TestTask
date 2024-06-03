@@ -1,81 +1,90 @@
 import { $ } from '@wdio/globals'
 import BasePage from './basepage.js';
+import { expect as chaiExpect } from 'chai';
+import { expect as wdioExpect } from '@wdio/globals';
 
 
 class LoginPage extends BasePage {
 
-    get usernameInput () {
+    get usernameInput() {
         return $('#user-name');
     }
-    get passwordInput () {
+    get passwordInput() {
         return $('#password');
     }
-    get loginSubmitBtn () {
+    get loginSubmitBtn() {
         return $('#login-button');
     }
-    get usernameInputError () {
+    get usernameInputError() {
         return $('#user-name.input_error');
     }
-    get usernameInputErrorIcon () {
+    get usernameInputErrorIcon() {
         return $("//input[@id='user-name']/following-sibling::*[name()='svg']");
     }
-    get passwordInputError () {
+    get passwordInputError() {
         return $('#password.input_error');
     }
-    get passwordInputErrorIcon () {
+    get passwordInputErrorIcon() {
         return $("//input[@id='password']/following-sibling::*[name()='svg']");
     }
-    get noPasswordErrorMsg () {
+    get noPasswordErrorMsg() {
         return $("//div[@class='error-message-container error' and contains(.,'Epic sadface: Password is required')]");
     }
-    get noUsernameErrorMsg () {
+    get noUsernameErrorMsg() {
         return $("//div[@class='error-message-container error' and contains(.,'Epic sadface: Username is required')]");
     }
-    get wrongCredentialsErrorMsg () {
+    get wrongCredentialsErrorMsg() {
         return $("//div[@class='error-message-container error' and contains(.,'Epic sadface: Username and password do not match any user in this service')]");
     }
 
-    async clickUsernameInputField () {
+    async clickUsernameInputField() {
         await this.usernameInput.click();
     }
-    async clickPasswordInputField () {
+    async clickPasswordInputField() {
         await this.passwordInput.click();
     }
-    async clickLoginSubmitBtn () {
+    async clickLoginSubmitBtn() {
         await this.loginSubmitBtn.click();
     }
-    async enterUsername (username) {
+    async enterUsername(username) {
         await this.usernameInput.setValue(username);
     }
-    async enterPassword (password) {
+    async enterPassword(password) {
         await this.passwordInput.setValue(password);
     }
-    async assertPasswordField () {
+    async login(username, password) {
+        await this.clickUsernameInputField();
+        await this.enterUsername(username);
+        await this.clickPasswordInputField();
+        await this.enterPassword(password);
+        await this.clickLoginSubmitBtn();
+    }
+    async assertPasswordField() {
         await expect(this.passwordInput).toHaveAttribute('type', 'password',);
     }
-    async assertErrorHighlightsVisible () {
+    async assertErrorHighlightsVisible() {
         await expect(this.usernameInputError).toBeDisplayed();
         await expect(this.passwordInputError).toBeDisplayed();
     }
-    async assertErrorIconsVisible () {
+    async assertErrorIconsVisible() {
         this.usernameInputErrorIcon.waitForDisplayed();
         this.passwordInputErrorIcon.waitForDisplayed();
     }
-    async assertNoPasswordMsgVisible () {
+    async assertNoPasswordMsgVisible() {
         await expect(this.noPasswordErrorMsg).toBeDisplayed();
     }
-    async assertNoUsernameMsgVisible () {
+    async assertNoUsernameMsgVisible() {
         await expect(this.noUsernameErrorMsg).toBeDisplayed();
     }
-    async assertWrongCredentialsMsgVisible () {
+    async assertWrongCredentialsMsgVisible() {
         await expect(this.wrongCredentialsErrorMsg).toBeDisplayed();
     }
-    async assertInputFieldsAreEmpty () {
+    async assertInputFieldsAreEmpty() {
         await expect(this.usernameInput).toHaveValue(expect.stringContaining(''));
         await expect(this.passwordInput).toHaveValue(expect.stringContaining(''));
     }
 
-    open () {
+    open() {
         return super.open(' ');
     }
 }

@@ -1,46 +1,49 @@
 import { browser } from '@wdio/globals'
+import { expect as chaiExpect } from 'chai';
+import { expect as wdioExpect } from '@wdio/globals';
 
 
 export default class BasePage {
 
-    get cartBtn () {
+    get cartBtn() {
         return $('#shopping_cart_container');
     }
-    get cartBtnBadge () {
+    get cartBtnBadge() {
         return $('span.shopping_cart_badge');
     }
-    get menuBtn () {
+    get menuBtn() {
         return $('#react-burger-menu-btn');
     }
-    get closeMenuBtn () {
+    get closeMenuBtn() {
         return $('#react-burger-cross-btn');
     }
-    get logoutBtn () {
+    get logoutBtn() {
         return $('#logout_sidebar_link');
     }
-    get menuItems () {
+    get menuItems() {
         return $$('nav.bm-item-list>a');
     }
-    
-    async clickCartBtn () {
+
+    async clickCartBtn() {
         await this.cartBtn.click();
     }
-    async clickMenuBtn () {
+    async clickMenuBtn() {
         await this.menuBtn.click();
+        await browser.pause(500);
     }
-    async clickCloseMenuBtn () {
+    async clickCloseMenuBtn() {
         await this.logoutBtn.isClickable(1000);
         await this.closeMenuBtn.click();
     }
-    async clickLogoutBtn () {
+    async clickLogoutBtn() {
         await this.logoutBtn.isClickable(1000);
         await this.logoutBtn.click();
     }
-    async assertMenuItemsPresent () {
+    async assertMenuItemsPresent() {
         await expect(this.menuItems).toBeElementsArrayOfSize(4);
     }
-    
-    open (path) {
+
+    open(path) {
         return browser.url(`https://www.saucedemo.com/${path}`)
     }
 }
