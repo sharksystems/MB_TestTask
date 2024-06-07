@@ -27,14 +27,27 @@ class InventoryPage extends BasePage {
     }
 
     totalItemsInCart = 0;
+    addedProductTitle;
+    addedProductDescription;
+    addedProductPrice;
 
+    async addItemToCartByTitle(title) {
+        await $(`//div[@class='inventory_item' and contains(., '${title}')]//button`).click();
+        this.totalItemsInCart++
+        this.addedProductTitle = title;
+        this.addedProductDescription = await $(`//div[@class='inventory_item' and contains(., '${title}')]//div[@class = 'inventory_item_desc']`).getText();
+        this.addedProductPrice = await $(`//div[@class='inventory_item' and contains(., '${title}')]//div[@class = 'inventory_item_price']`).getText();
+    }
     async clickAddToCartBtn() {
         await this.addToCartBtn.click();
         this.totalItemsInCart++
     }
-    async assertNumberOfItemsInCart() {
-        let counter = this.totalItemsInCart.toString();
+    async assertNumberOfItemsInCartBtn() {
+        let counter = String(this.totalItemsInCart);
         await expect(this.cartBtnBadge).toHaveText(counter);
+    }
+    async assertNoItemsDisplayedOnCartBtn() {
+
     }
     async clickProductSortingSelect() {
         await this.productSortingSelect.click();
@@ -126,8 +139,12 @@ class InventoryPage extends BasePage {
 
         console.log('Product Prices After Sorting - Descending (Expected):', productPricesSortedDescending);
         console.log('Product Prices After Sorting - Descending (Actual):', productPricesAfterSorting);
-        
+
         chaiExpect(productPricesAfterSorting).to.deep.equal(productPricesSortedDescending, 'The product prices were not sorted correctly (Descending)');
+    }
+
+    open() {
+        return super.open('inventory');
     }
 }
 export default InventoryPage;

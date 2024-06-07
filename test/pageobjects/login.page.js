@@ -1,4 +1,3 @@
-import { $ } from '@wdio/globals'
 import BasePage from './basepage.js';
 import { expect as chaiExpect } from 'chai';
 import { expect as wdioExpect } from '@wdio/globals';
@@ -60,32 +59,32 @@ class LoginPage extends BasePage {
         await this.clickLoginSubmitBtn();
     }
     async assertPasswordField() {
-        await expect(this.passwordInput).toHaveAttribute('type', 'password',);
+        await wdioExpect(this.passwordInput).toHaveAttribute('type', 'password',);
     }
     async assertErrorHighlightsVisible() {
-        await expect(this.usernameInputError).toBeDisplayed();
-        await expect(this.passwordInputError).toBeDisplayed();
+        await wdioExpect(this.usernameInputError).toBeDisplayed();
+        await wdioExpect(this.passwordInputError).toBeDisplayed();
     }
     async assertErrorIconsVisible() {
         this.usernameInputErrorIcon.waitForDisplayed();
         this.passwordInputErrorIcon.waitForDisplayed();
     }
     async assertNoPasswordMsgVisible() {
-        await expect(this.noPasswordErrorMsg).toBeDisplayed();
+        await wdioExpect(this.noPasswordErrorMsg).toBeDisplayed();
     }
     async assertNoUsernameMsgVisible() {
-        await expect(this.noUsernameErrorMsg).toBeDisplayed();
+        await wdioExpect(this.noUsernameErrorMsg).toBeDisplayed();
     }
     async assertWrongCredentialsMsgVisible() {
-        await expect(this.wrongCredentialsErrorMsg).toBeDisplayed();
+        await wdioExpect(this.wrongCredentialsErrorMsg).toBeDisplayed();
     }
     async assertInputFieldsAreEmpty() {
-        await expect(this.usernameInput).toHaveValue(expect.stringContaining(''));
-        await expect(this.passwordInput).toHaveValue(expect.stringContaining(''));
+        await wdioExpect(this.usernameInput).toHaveValue(expect.stringContaining(''));
+        await wdioExpect(this.passwordInput).toHaveValue(expect.stringContaining(''));
     }
 
     open() {
-        return super.open(' ');
+        return super.open('');
     }
 }
 export default LoginPage;
